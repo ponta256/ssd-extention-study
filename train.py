@@ -18,11 +18,14 @@ import math
 
 
 # CHANGE HERE
-from ssd import build_ssd
-cfg = voc
+# from ssd import build_ssd
+# cfg = voc
 
 # from ssd512 import build_ssd
 # cfg = voc512
+
+from dssd512 import build_ssd
+cfg = vocd512
 
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")

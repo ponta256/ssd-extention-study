@@ -14,14 +14,14 @@ from data import VOC_CLASSES as labelmap
 import torch.utils.data as data
 
 # CHANGE HERE
-from ssd import build_ssd
+# from ssd import build_ssd
 # from ssd512 import build_ssd
+from dssd512 import build_ssd
 
 from data import config
 # cfg = config.voc
 # cfg = config.voc512
 cfg = config.vocd512
-# cfg = config.vocd512f
 
 import sys
 import os
