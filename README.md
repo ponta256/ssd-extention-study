@@ -6,3 +6,4 @@ pytorch版SSDについて以下の改造を行ったもの
 * warmup (burnin)の追加
 * focal lossの追加
 * prediction moduleの追加
+* deconvolutionの追加
