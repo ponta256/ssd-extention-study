@@ -31,8 +31,8 @@ vocd512 = {
 
 vocd512f = {
     'num_classes': 21,
-    'lr_steps': (80, 100, 110),    
-    'max_epoch': 110,  
+    'lr_steps': (100, 130, 150),    
+    'max_epoch': 150,  
     'feature_maps': [64, 32, 16, 8, 4, 2, 1],
     'min_dim': 512,
     'steps': [8, 16, 32, 64, 128, 256, 512],
