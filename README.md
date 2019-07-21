@@ -7,3 +7,4 @@ pytorch版SSDについて以下の改造を行ったもの
 * focal lossの追加
 * prediction moduleの追加
 * deconvolutionの追加
+* FSSDの追加
