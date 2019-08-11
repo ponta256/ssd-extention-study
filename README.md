@@ -8,3 +8,4 @@ pytorch版SSDについて以下の改造を行ったもの
 * prediction moduleの追加
 * deconvolutionの追加
 * FSSDの追加
+* FSSD(ResNeXt)の追加
