@@ -10,13 +10,13 @@ class PriorBox(object):
     """
     def __init__(self, cfg):
         super(PriorBox, self).__init__()
-        self.image_size = cfg['min_dim']
+        # self.image_size = cfg['min_dim']
         # number of priors for feature map location (either 4 or 6)
         self.num_priors = len(cfg['aspect_ratios'])
         self.variance = cfg['variance'] or [0.1]
         self.feature_maps = cfg['feature_maps']
-        self.min_sizes = cfg['min_sizes']
-        self.max_sizes = cfg['max_sizes']
+        self.size = cfg['size']
+        self.anchor_sizes = cfg['anchor_sizes']
         self.steps = cfg['steps']
         self.aspect_ratios = cfg['aspect_ratios']
         self.clip = cfg['clip']
@@ -27,27 +27,26 @@ class PriorBox(object):
 
     def forward(self):
         mean = []
+        w = self.size[0]
+        h = self.size[1]
         for k, f in enumerate(self.feature_maps):
-            for i, j in product(range(f), repeat=2):
-                f_k = self.image_size / self.steps[k]
-                # unit center x,y
-                cx = (j + 0.5) / f_k
-                cy = (i + 0.5) / f_k
+            # for i, j in product(range(f), repeat=2):
+            for i in range(f[0]):  # y
+                for j in range(f[1]): # x
+                    # print('W, H, X, Y', w, h, j, i)
+                    # should be equal to f (e.g. 768/8=96)
+                    f_k_x = w / self.steps[k]
+                    f_k_y = h / self.steps[k]
+                    # unit center x,y (normalized, e.g. 0.5 / 96)
+                    cx = (j + 0.5) / f_k_x
+                    cy = (i + 0.5) / f_k_y
 
-                # aspect_ratio: 1
-                # rel size: min_size
-                s_k = self.min_sizes[k]/self.image_size
-                mean += [cx, cy, s_k, s_k]
+                    s_k_x = self.anchor_sizes[k]/w
+                    s_k_y = self.anchor_sizes[k]/h
 
-                # aspect_ratio: 1
-                # rel size: sqrt(s_k * s_(k+1))
-                s_k_prime = sqrt(s_k * (self.max_sizes[k]/self.image_size))
-                mean += [cx, cy, s_k_prime, s_k_prime]
+                    for ar in self.aspect_ratios[k]:
+                        mean += [cx, cy, s_k_x/sqrt(ar), s_k_y*sqrt(ar)]
 
-                # rest of aspect ratios
-                for ar in self.aspect_ratios[k]:
-                    mean += [cx, cy, s_k*sqrt(ar), s_k/sqrt(ar)]
-                    mean += [cx, cy, s_k/sqrt(ar), s_k*sqrt(ar)]
         # back to torch land
         output = torch.Tensor(mean).view(-1, 4)
         if self.clip:
