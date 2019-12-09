@@ -9,3 +9,4 @@ pytorch版SSDについて以下の改造を行ったもの
 * deconvolutionの追加
 * FSSDの追加
 * FSSD(ResNeXt)の追加
+* BDDのサポート
